@@ -1,0 +1,7 @@
+# SOC Alert Triage Lab: custom Suricata rules
+
+# Rule 1 (Case 1): alert on any HTTP request whose User-Agent contains BadBot-Test
+alert http any any -> any any (msg:"LOCAL BadBot User-Agent"; http.user_agent; content:"BadBot-Test"; classtype:trojan-activity; sid:1000001; rev:2;)
+
+# Rule 2 (Case 2): alert when one source sends 20 SYN packets within 5 seconds (possible port scan)
+alert tcp any any -> any any (msg:"LOCAL Possible TCP port scan"; flags:S; threshold:type both, track by_src, count 20, seconds 5; classtype:attempted-recon; sid:1000002; rev:1;)
